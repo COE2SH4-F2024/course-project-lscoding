@@ -2,16 +2,30 @@
 
 GameMechs::GameMechs()
 {
+    boardSizeX = 30;
+    boardSizeY = 15;
+
+    score = 0;
     
+    exitFlag = false;
+    loseFlag = false;  
 }
 
 GameMechs::GameMechs(int boardX, int boardY)
 {
+    boardSizeX = boardX;
+    boardSizeY = boardY;
+
+    score = 0;
     
+    exitFlag = false;
+    loseFlag = false;
+
+    //Might need to Generate food position here
 }
 
 // do you need a destructor?
-GameMechs::~GameMechs()
+GameMechs::~GameMechs() //Might be removable since there is no HEAP memory to deallocate
 {
     
 }
@@ -65,12 +79,12 @@ void GameMechs::setLoseFlag()
 
 void GameMechs::setInput(char this_input)
 {
-    this_input = input;
+    input = this_input;
 }
 
 void GameMechs::clearInput()
 {
-    
+    input = 0;
 }
 
 // More methods should be added here
