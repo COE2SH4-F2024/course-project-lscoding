@@ -19,7 +19,49 @@ objPos::objPos(int xPos, int yPos, char sym)
 // Respect the rule of six / minimum four
 // [TODO] Implement the missing special member functions to meet the minimum four rule
 
+//Destructor
+objPos::~objPos() {
+    delete pos;
+    pos = nullptr;
+}
 
+//Copy Constructor
+objPos::objPos(const objPos& clone){
+    pos = new Pos;
+    pos->x = clone.pos->x;
+    pos->y = clone.pos->y;
+    symbol = clone.symbol;
+	// rowsNum = clone.rowsNum;
+	// colsNum = clone.colsNum;
+    
+	// matrixData = new int*[rowsNum];
+    
+	// for (int i = 0; i < rowsNum; ++i) {
+    //     matrixData[i] = new int[colsNum];
+    // }
+    // for (int i = 0; i < rowsNum; ++i) {
+    //     for (int j = 0; j < colsNum; ++j) {
+    //         setElement(clone.matrixData[i][j],i,j);
+    //     }
+    // }
+}
+
+//Copy Assignment Constructor
+objPos& objPos::operator=(const objPos& clone){
+	if(this == &clone){
+		return *this;
+	}
+    
+    delete pos;
+    
+    pos = new Pos;
+    pos->x = clone.pos->x;
+    pos->y = clone.pos->y;
+    
+    symbol = clone.symbol;
+
+	return *this;
+}
 
 
 void objPos::setObjPos(objPos o)
