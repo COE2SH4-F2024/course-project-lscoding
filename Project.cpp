@@ -44,10 +44,13 @@ void Initialize(void)
     MacUILib_init();
     MacUILib_clearScreen();
 
+
+    gameMech = new GameMechs();
+
     myPlayer = new Player(gameMech); //replace later
 
 
-    gameMech = new GameMechs();
+    
 
 
 }
