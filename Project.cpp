@@ -67,45 +67,61 @@ void GetInput(void)
 
 void RunLogic(void)
 {
-
-    switch(gameMech->getInput())
-    {                      
-        case ' ':  // exit
-            gameMech->setExitTrue();
-            break;
-        case 'w':
-
-            break;
-        case 'a':
-
-            break;
-        case 's':
-
-            break;
-        case 'd':
-
-            break;
-        default:
-            break;
+    if(gameMech->getInput() == ' '){
+        gameMech->setExitTrue();
     }
-
-    
-
+    myPlayer->updatePlayerDir();
+    myPlayer->movePlayer();
 }
 
 void DrawScreen(void)
 {
 
-    objPos playerPos = myPlayer ->getPlayerPos();
+
+    objPos playerObjPos = myPlayer->getPlayerPos();
+    
+    Pos* playerPos = playerObjPos.pos;
+    char playerSymbol = myPlayer->getPlayerPos().getSymbol();
+    
+    int boardWidth = gameMech->getBoardSizeX();
+    int boardHeight = gameMech->getBoardSizeY();
 
     // MacUILib_printf("%c \n", gameMech->getInput());
     MacUILib_clearScreen();
-    MacUILib_printf("Player [x, y, sym] = [%d, %d, %c]\n", playerPos.pos->x, playerPos.pos->y, playerPos.symbol);
+    for(int row = 0; row < boardHeight; row++){
+        MacUILib_printf("\n");
+        for(int col = 0; col < boardWidth; col++){
+            if(row == 0 || row == boardHeight-1 ||
+                col == 0 || col == boardWidth-1){
+                    MacUILib_printf("%c", '#');
+            }
+            else if(playerPos->y == row && playerPos->x == col){
+                MacUILib_printf("%c", playerSymbol);
+            }
+            else{
+                char characterDisp = ' ';
+                // for(int i = 0; i < 5; i++) //go through collection List and place all collectables
+                // {
+                //     if(collectableList[i].x == col && collectableList[i].y == row){
+                //         characterDisp = collectableList[i].symbol;
+                //         break;
+                //     }
+                // }
+      
+                 MacUILib_printf("%c", characterDisp);
+       
+            }
+        }
+    }
+    // MacUILib_printf("\nPress '=' to Increase Game Speed!\n");
+    // MacUILib_printf("Press '-' to Decrease Game Speed!\n");
+    // MacUILib_printf("Game Level set to %d (%f seconds per frame).\n", gameSpeedState+1, (double)gameSpeeds[gameSpeedState]/1000000);
+    // MacUILib_printf("Player [x, y, sym] = [%d, %d, %c]\n", playerPos.pos->x, playerPos.pos->y, playerPos.symbol);
 }
 
 void LoopDelay(void)
 {
-    MacUILib_Delay(DELAY_CONST); // 0.1s delay
+    MacUILib_Delay(1000000); // 0.1s delay
 }
 
 
