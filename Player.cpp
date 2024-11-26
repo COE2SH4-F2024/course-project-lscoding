@@ -73,35 +73,51 @@ void Player::updatePlayerDir()
 
 void Player::movePlayer()
 {
-    char input = mainGameMechsRef->getInput();
-    switch(input)
+
+    switch(myDir)
     {
-        case 'W':
-        case 'w':
-            myDir = UP;
-        
+        case STOP:  
             break;
 
-        case 'S':
-        case 's':
-            myDir = DOWN;
-        
+        case UP:
+            playerPos.pos->y-=1;
             break;
 
-        case 'A':
-        case 'a':
-                myDir = LEFT;
-            
-        break;
+        case DOWN:
+            playerPos.pos->y+=1;
+            break;
 
-        case 'D':
-        case 'd':
-                myDir = RIGHT;
-            
-        break;
+        case LEFT:
+            playerPos.pos->y-=1;
+            break;
 
+        case RIGHT:
+            playerPos.pos->x+=1;
+
+            break;
+        
         default:
             break;
+
+    }
+    if(playerPos.pos->x > 18)
+    {
+        playerPos.pos->x = 1;
+    }
+
+    else if(playerPos.pos->x < 1)
+    {
+        playerPos.pos->x = 18;
+    }
+
+    else if(playerPos.pos->y < 1)
+    {
+        playerPos.pos->y = 8;
+    }
+
+    else if(playerPos.pos->y > 8)
+    {
+        playerPos.pos->y = 1;
     }
 
     // PPA3 Finite State Machine logic
