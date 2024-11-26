@@ -121,7 +121,7 @@ void DrawScreen(void)
 
 void LoopDelay(void)
 {
-    MacUILib_Delay(1000000); // 0.1s delay
+    MacUILib_Delay(DELAY_CONST); // 0.1s delay
 }
 
 
