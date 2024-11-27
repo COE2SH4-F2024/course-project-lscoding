@@ -4,6 +4,7 @@
 #include "GameMechs.h"
 
 #include "Player.h"
+#include "FoodBin.h"
 
 using namespace std;
 
@@ -11,6 +12,7 @@ using namespace std;
 
 Player *myPlayer; //global pointer to instantiate a player object on heap
 GameMechs *gameMech;
+FoodBin *foodBin;
 
 void Initialize(void);
 void GetInput(void);
@@ -49,7 +51,11 @@ void Initialize(void)
 
     myPlayer = new Player(gameMech); //replace later
 
+    foodBin = new FoodBin(gameMech, 5); //2 food collectables should appear at a time
 
+    srand(time(NULL));
+
+    foodBin->generateFoods(myPlayer);
     
 
 
@@ -100,15 +106,16 @@ void DrawScreen(void)
             }
             else{
                 char characterDisp = ' ';
-                // for(int i = 0; i < 5; i++) //go through collection List and place all collectables
-                // {
-                //     if(collectableList[i].x == col && collectableList[i].y == row){
-                //         characterDisp = collectableList[i].symbol;
-                //         break;
-                //     }
-                // }
+                for(int i = 0; i < foodBin->getFoodListCount(); i++) //go through collection List and place all collectables
+                {
+                    objPos* food = foodBin->getFood(i);
+                    if(food->pos->x == col && food->pos->y == row){
+                        characterDisp = food->symbol;
+                        break;
+                    }
+                }
       
-                 MacUILib_printf("%c", characterDisp);
+                MacUILib_printf("%c", characterDisp);
        
             }
         }
@@ -132,6 +139,11 @@ void CleanUp(void)
     MacUILib_uninit();
 
     delete myPlayer; // delete my player object pointer
+    myPlayer = nullptr;
 
     delete gameMech; //delete gamemech object pointer
+    gameMech = nullptr;
+
+    delete foodBin; //delete foodBin object pointer
+    foodBin = nullptr;
 }
