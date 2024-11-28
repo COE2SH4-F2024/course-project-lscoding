@@ -76,9 +76,6 @@ void Player::movePlayer()
 
     switch(myDir)
     {
-        case STOP:  
-            break;
-
         case UP:
             playerPos.pos->y-=1;
             break;
