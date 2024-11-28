@@ -99,19 +99,19 @@ void Player::movePlayer()
     }
 
     //Wrap around code
-    // if(playerPos.pos->y >= mainGameMechsRef->getBoardSizeY()-1){
-    //     playerPos.pos->y = 1;
-    // }
-    // else if(playerPos.pos->y <= 0){
-    //     playerPos.pos->y = mainGameMechsRef->getBoardSizeY()-2;
-    // }
+    if(playerPos.pos->y >= mainGameMechsRef->getBoardSizeY()-1){
+        playerPos.pos->y = 1;
+    }
+    else if(playerPos.pos->y <= 0){
+        playerPos.pos->y = mainGameMechsRef->getBoardSizeY()-2;
+    }
 
-    // if(playerPos.pos->x >= mainGameMechsRef->getBoardSizeX()-1){
-    //     playerPos.pos->x = 1;
-    // }
-    // else if(playerPos.pos->x <= 0){
-    //     playerPos.pos->x = mainGameMechsRef->getBoardSizeX()-2;
-    // }
+    if(playerPos.pos->x >= mainGameMechsRef->getBoardSizeX()-1){
+        playerPos.pos->x = 1;
+    }
+    else if(playerPos.pos->x <= 0){
+        playerPos.pos->x = mainGameMechsRef->getBoardSizeX()-2;
+    }
 
 
     // PPA3 Finite State Machine logic
