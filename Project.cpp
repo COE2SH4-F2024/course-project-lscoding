@@ -22,10 +22,10 @@ void LoopDelay(void);
 void CleanUp(void);
 
 
-objPos playerObjPos;
+// objPos playerObjPos;
     
-Pos* playerPos;
-char playerSymbol;
+// Pos* playerPos;
+// char playerSymbol;
 
 int main(void)
 {
@@ -62,9 +62,9 @@ void Initialize(void)
     foodBin->generateFoods(myPlayer);
     
     //initializing player position object
-    playerObjPos = myPlayer->getPlayerPos();
-    playerPos = playerObjPos.pos;
-    playerSymbol = myPlayer->getPlayerPos().getSymbol();
+    // playerObjPos = myPlayer->getPlayerPos();
+    // playerPos = playerObjPos.pos;
+    // playerSymbol = myPlayer->getPlayerPos().getSymbol();
 
 }
 
@@ -80,6 +80,9 @@ void GetInput(void)
 
 void RunLogic(void)
 {
+    objPos playerObjPos = myPlayer->getPlayerPos();
+    Pos* playerPos = playerObjPos.pos;
+    
     if(gameMech->getInput() == ' '){
         gameMech->setExitTrue();
     }
@@ -106,7 +109,10 @@ void DrawScreen(void)
 {
 
     
-
+    objPos playerObjPos = myPlayer->getPlayerPos();
+    
+    Pos* playerPos = playerObjPos.pos;
+    char playerSymbol = myPlayer->getPlayerPos().getSymbol();
 
     
     
