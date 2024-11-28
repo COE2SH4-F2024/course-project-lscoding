@@ -22,6 +22,10 @@ void LoopDelay(void);
 void CleanUp(void);
 
 
+objPos playerObjPos;
+    
+Pos* playerPos;
+char playerSymbol;
 
 int main(void)
 {
@@ -57,7 +61,10 @@ void Initialize(void)
 
     foodBin->generateFoods(myPlayer);
     
-
+    //initializing player position object
+    playerObjPos = myPlayer->getPlayerPos();
+    playerPos = playerObjPos.pos;
+    playerSymbol = myPlayer->getPlayerPos().getSymbol();
 
 }
 
@@ -76,18 +83,32 @@ void RunLogic(void)
     if(gameMech->getInput() == ' '){
         gameMech->setExitTrue();
     }
+    if(gameMech->getLoseFlagStatus() == 1)
+    {
+        gameMech->setExitTrue();
+    }
+
     myPlayer->updatePlayerDir();
     myPlayer->movePlayer();
+  
+    // Check if player is outside the board boundaries
+    
+    if (playerPos->x <= 0 || playerPos->x >= gameMech->getBoardSizeX() - 1|| 
+    (playerPos->y <= 0 || playerPos->y >= gameMech->getBoardSizeY() - 1))
+    {
+        gameMech->setLoseFlag(); 
+    }
+
+
 }
 
 void DrawScreen(void)
 {
 
-
-    objPos playerObjPos = myPlayer->getPlayerPos();
     
-    Pos* playerPos = playerObjPos.pos;
-    char playerSymbol = myPlayer->getPlayerPos().getSymbol();
+
+
+    
     
     int boardWidth = gameMech->getBoardSizeX();
     int boardHeight = gameMech->getBoardSizeY();
@@ -120,6 +141,7 @@ void DrawScreen(void)
             }
         }
     }
+    
     // MacUILib_printf("\nPress '=' to Increase Game Speed!\n");
     // MacUILib_printf("Press '-' to Decrease Game Speed!\n");
     // MacUILib_printf("Game Level set to %d (%f seconds per frame).\n", gameSpeedState+1, (double)gameSpeeds[gameSpeedState]/1000000);
