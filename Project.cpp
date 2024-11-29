@@ -80,8 +80,10 @@ void GetInput(void)
 
 void RunLogic(void)
 {
-    objPos playerObjPos = myPlayer->getPlayerPos();
-    Pos* playerPos = playerObjPos.pos;
+    objPosArrayList* playerPosList = myPlayer->getPlayerPos();
+    objPos playerHeadObjPos = playerPosList->getHeadElement();
+
+    Pos* playerPos = playerHeadObjPos.pos;
     
     if(gameMech->getInput() == ' '){
         gameMech->setExitTrue();
@@ -91,17 +93,31 @@ void RunLogic(void)
         gameMech->setExitTrue();
     }
 
+    Pos oldPlayerPos = *playerHeadObjPos.pos;
     myPlayer->updatePlayerDir();
     myPlayer->movePlayer();
   
     // Check if player is outside the board boundaries
-    
     if (playerPos->x <= 0 || playerPos->x >= gameMech->getBoardSizeX() - 1|| 
     (playerPos->y <= 0 || playerPos->y >= gameMech->getBoardSizeY() - 1))
     {
         gameMech->setLoseFlag(); 
     }
 
+    // Check if collision with food
+    for(int i = 0; i < foodBin->getFoodListCount(); i++){
+        objPos* foodPos = foodBin->getFood(i);
+        if(playerPos->x != foodPos->pos->x || playerPos->y != foodPos->pos->y){
+            continue;
+        }
+        switch(foodPos->getSymbol()){
+            case 'F':
+                playerPosList->insertTail(objPos(oldPlayerPos.x,oldPlayerPos.y,'@'));
+                break;
+            case 'G':
+                break;
+        }
+    }
 
 }
 
@@ -109,10 +125,8 @@ void DrawScreen(void)
 {
 
     
-    objPos playerObjPos = myPlayer->getPlayerPos();
+    objPosArrayList* playerObjPosList = myPlayer->getPlayerPos();
     
-    Pos* playerPos = playerObjPos.pos;
-    char playerSymbol = myPlayer->getPlayerPos().getSymbol();
 
     
     
@@ -128,18 +142,27 @@ void DrawScreen(void)
                 col == 0 || col == boardWidth-1){
                     MacUILib_printf("%c", '#');
             }
-            else if(playerPos->y == row && playerPos->x == col){
-                MacUILib_printf("%c", playerSymbol);
-            }
             else{
                 char characterDisp = ' ';
-                for(int i = 0; i < foodBin->getFoodListCount(); i++) //go through collection List and place all collectables
+                bool characterFound = false;
+                for(int i = 0; i < playerObjPosList->getSize(); i++) //go through collection List and place all collectables
                 {
-                    objPos* food = foodBin->getFood(i);
-                    if(food->pos->x == col && food->pos->y == row){
-                        characterDisp = food->symbol;
+                    objPos playerBody = playerObjPosList->getElement(i);
+                    if(playerBody.pos->x == col && playerBody.pos->y == row){
+                        characterDisp = playerBody.symbol;
+                        characterFound = true;
                         break;
                     }
+                }
+                if(characterFound == false){
+                    for(int i = 0; i < foodBin->getFoodListCount(); i++) //go through collection List and place all collectables
+                    {
+                        objPos* food = foodBin->getFood(i);
+                        if(food->pos->x == col && food->pos->y == row){
+                            characterDisp = food->symbol;
+                            break;
+                        }
+                    }   
                 }
       
                 MacUILib_printf("%c", characterDisp);

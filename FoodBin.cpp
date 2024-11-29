@@ -18,7 +18,7 @@ void FoodBin::generateFoods(Player* playerRef)
 
     // Random Non-Repeating Item Generation Algorithm
     ////////////////////////////////////////////////////
-    objPos playerPos = playerRef->getPlayerPos();
+    objPosArrayList* playerPos = playerRef->getPlayerPos();
 
     char selectableChar[2] = {'F', 'G'};
     int count = 0;
@@ -34,15 +34,21 @@ void FoodBin::generateFoods(Player* playerRef)
         int newX = rand() % xRange;       
         int newY =  rand() % yRange;
 
-        //Checks if in range of board
-        if(newX != 0 
-            && newX != xRange-1 
-            && newX != playerPos.pos->x
-            && newY != playerPos.pos->y
-            && newY != 0
-            && newY != yRange-1)
-        {
+        objPosArrayList* playerPosList = playerRef->getPlayerPos();
+        const int playerSize = playerPosList->getSize();
 
+        for(int i = 0; i < playerSize; i++){
+            //Checks if in range of board
+            if(newX == 0 
+                || newX == xRange-1 
+                || newX == playerPosList->getElement(i).pos->x
+                || newY == playerPosList->getElement(i).pos->y
+                || newY == 0
+                || newY == yRange-1)
+            {
+                continue;
+            }
+        }
 
             int charIndex = rand() % 2;
 
@@ -56,7 +62,7 @@ void FoodBin::generateFoods(Player* playerRef)
             
             
             
-        }
+    
 
 
 
