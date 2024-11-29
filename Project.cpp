@@ -113,8 +113,12 @@ void RunLogic(void)
         switch(foodPos->getSymbol()){
             case 'F':
                 playerPosList->insertTail(objPos(oldPlayerPos.x,oldPlayerPos.y,'@'));
+                foodBin->generateFoods(myPlayer);
+                gameMech->addScore(1);
                 break;
             case 'G':
+                foodBin->generateFoods(myPlayer);
+                gameMech->addScore(10);
                 break;
         }
     }
@@ -171,7 +175,7 @@ void DrawScreen(void)
         }
     }
     
-    // MacUILib_printf("\nPress '=' to Increase Game Speed!\n");
+    MacUILib_printf("\nCurrent Score: %d\n", gameMech->getScore());
     // MacUILib_printf("Press '-' to Decrease Game Speed!\n");
     // MacUILib_printf("Game Level set to %d (%f seconds per frame).\n", gameSpeedState+1, (double)gameSpeeds[gameSpeedState]/1000000);
     // MacUILib_printf("Player [x, y, sym] = [%d, %d, %c]\n", playerPos.pos->x, playerPos.pos->y, playerPos.symbol);
@@ -197,4 +201,5 @@ void CleanUp(void)
 
     delete foodBin; //delete foodBin object pointer
     foodBin = nullptr;
+    
 }
