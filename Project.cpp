@@ -123,6 +123,12 @@ void RunLogic(void)
         }
     }
 
+    //Made the game end when you reach max snake length
+    if(playerPosList->getSize() >= (gameMech->getBoardSizeX()-2)*(gameMech->getBoardSizeY()))
+    {
+        MacUILib_printf("YOU WIN THE GAME!!!");
+        gameMech->setExitTrue();
+    } 
 }
 
 void DrawScreen(void)
