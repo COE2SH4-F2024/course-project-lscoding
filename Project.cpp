@@ -21,12 +21,6 @@ void DrawScreen(void);
 void LoopDelay(void);
 void CleanUp(void);
 
-
-// objPos playerObjPos;
-    
-// Pos* playerPos;
-// char playerSymbol;
-
 int main(void)
 {
 
@@ -58,13 +52,11 @@ void Initialize(void)
     foodBin = new FoodBin(gameMech, 5); //2 food collectables should appear at a time
 
     srand(time(NULL));
-
-    foodBin->generateFoods(myPlayer);
     
-    //initializing player position object
-    // playerObjPos = myPlayer->getPlayerPos();
-    // playerPos = playerObjPos.pos;
-    // playerSymbol = myPlayer->getPlayerPos().getSymbol();
+    objPosArrayList* playerPosList = myPlayer->getPlayerPos();
+    foodBin->generateFoods(playerPosList, playerPosList->getSize());
+    
+
 
 }
 
@@ -79,12 +71,7 @@ void GetInput(void)
 }
 
 void RunLogic(void)
-{
-    objPosArrayList* playerPosList = myPlayer->getPlayerPos();
-    objPos playerHeadObjPos = playerPosList->getHeadElement();
-
-    Pos* playerPos = playerHeadObjPos.pos;
-    
+{    
     if(gameMech->getInput() == ' '){
         gameMech->setExitTrue();
     }
@@ -93,42 +80,16 @@ void RunLogic(void)
         gameMech->setExitTrue();
     }
 
-    Pos oldPlayerPos = *playerHeadObjPos.pos;
     myPlayer->updatePlayerDir();
-    myPlayer->movePlayer();
-  
-    // Check if player is outside the board boundaries
-    if (playerPos->x <= 0 || playerPos->x >= gameMech->getBoardSizeX() - 1|| 
-    (playerPos->y <= 0 || playerPos->y >= gameMech->getBoardSizeY() - 1))
-    {
-        gameMech->setLoseFlag(); 
-    }
-
-    // Check if collision with food
-    for(int i = 0; i < foodBin->getFoodListCount(); i++){
-        objPos* foodPos = foodBin->getFood(i);
-        if(playerPos->x != foodPos->pos->x || playerPos->y != foodPos->pos->y){
-            continue;
-        }
-        switch(foodPos->getSymbol()){
-            case 'F':
-                playerPosList->insertTail(objPos(oldPlayerPos.x,oldPlayerPos.y,'@'));
-                foodBin->generateFoods(myPlayer);
-                gameMech->addScore(1);
-                break;
-            case 'G':
-                foodBin->generateFoods(myPlayer);
-                gameMech->addScore(10);
-                break;
-        }
-    }
-
+    myPlayer->movePlayer(foodBin);
+    
+    // // Check if collision with food
     //Made the game end when you reach max snake length
-    if(playerPosList->getSize() >= (gameMech->getBoardSizeX()-2)*(gameMech->getBoardSizeY()))
-    {
-        MacUILib_printf("YOU WIN THE GAME!!!");
-        gameMech->setExitTrue();
-    } 
+    // if(playerPosList->getSize() >= (gameMech->getBoardSizeX()-2)*(gameMech->getBoardSizeY()))
+    // {
+    //     MacUILib_printf("YOU WIN THE GAME!!!");
+    //     gameMech->setExitTrue();
+    // } 
 }
 
 void DrawScreen(void)
@@ -143,7 +104,6 @@ void DrawScreen(void)
     int boardWidth = gameMech->getBoardSizeX();
     int boardHeight = gameMech->getBoardSizeY();
 
-    // MacUILib_printf("%c \n", gameMech->getInput());
     MacUILib_clearScreen();
     for(int row = 0; row < boardHeight; row++){
         MacUILib_printf("\n");
@@ -182,9 +142,6 @@ void DrawScreen(void)
     }
     
     MacUILib_printf("\nCurrent Score: %d\n", gameMech->getScore());
-    // MacUILib_printf("Press '-' to Decrease Game Speed!\n");
-    // MacUILib_printf("Game Level set to %d (%f seconds per frame).\n", gameSpeedState+1, (double)gameSpeeds[gameSpeedState]/1000000);
-    // MacUILib_printf("Player [x, y, sym] = [%d, %d, %c]\n", playerPos.pos->x, playerPos.pos->y, playerPos.symbol);
 }
 
 void LoopDelay(void)
@@ -197,6 +154,10 @@ void CleanUp(void)
 {
     MacUILib_clearScreen();    
 
+    if(gameMech->getLoseFlagStatus() == true){
+        MacUILib_printf("\nYou Lose!\nYour score is: %d\n", gameMech->getScore());
+    }
+    MacUILib_printf("Exiting game...\n");
     MacUILib_uninit();
 
     delete myPlayer; // delete my player object pointer

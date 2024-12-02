@@ -2,7 +2,7 @@
 #define FOODBIN
 
 #include "GameMechs.h"
-#include "Player.h"
+
 
 using namespace std;
 
@@ -14,7 +14,7 @@ class FoodBin
     public:
         FoodBin(GameMechs* thisGMRef, int foodListCount);
         ~FoodBin();
-        void generateFoods(Player* playerRef);
+        void generateFoods(objPosArrayList* playerPosList, int playerPosListSize);
         objPos* getFood(int index);
         int getFoodListCount();
         

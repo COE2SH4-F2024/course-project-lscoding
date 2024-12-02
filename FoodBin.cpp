@@ -11,14 +11,13 @@ FoodBin::~FoodBin(){
 objPos* FoodBin::getFood(int index){
     return &foodList[index];
 }
-void FoodBin::generateFoods(Player* playerRef)
+void FoodBin::generateFoods(objPosArrayList* playerPosList, int playerPosListSize)
 {
     // This is possibly one of the most conceptually challenging function in all PPAs
     // Once you've mastered this one, you are ready to take on the 2SH4 course project!
 
     // Random Non-Repeating Item Generation Algorithm
     ////////////////////////////////////////////////////
-    objPosArrayList* playerPos = playerRef->getPlayerPos();
 
     char selectableChar[2] = {'F', 'G'};
     int count = 0;
@@ -34,17 +33,14 @@ void FoodBin::generateFoods(Player* playerRef)
         int newX = rand() % xRange;       
         int newY =  rand() % yRange;
 
-        objPosArrayList* playerPosList = playerRef->getPlayerPos();
-        const int playerSize = playerPosList->getSize();
-
-        for(int i = 0; i < playerSize; i++){
+        for(int i = 0; i < playerPosListSize; i++){
             //Checks if in range of board
             if(newX == 0 
-                || newX == xRange-1 
+                || newX == xRange-2 
                 || newX == playerPosList->getElement(i).pos->x
                 || newY == playerPosList->getElement(i).pos->y
                 || newY == 0
-                || newY == yRange-1)
+                || newY == yRange-2)
             {
                 continue;
             }
