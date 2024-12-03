@@ -8,12 +8,7 @@
 
 class Player
 {
-    // Construct the remaining declaration from the project manual.
-
-    // Only some sample members are included here
-
-    // You will include more data members and member functions to complete your design.
-
+    
     
     public:
         enum Dir {UP, DOWN, LEFT, RIGHT, STOP};  // This is the direction state

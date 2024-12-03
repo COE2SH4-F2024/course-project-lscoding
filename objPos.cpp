@@ -31,19 +31,7 @@ objPos::objPos(const objPos& clone){
     pos->x = clone.pos->x;
     pos->y = clone.pos->y;
     symbol = clone.symbol;
-	// rowsNum = clone.rowsNum;
-	// colsNum = clone.colsNum;
-    
-	// matrixData = new int*[rowsNum];
-    
-	// for (int i = 0; i < rowsNum; ++i) {
-    //     matrixData[i] = new int[colsNum];
-    // }
-    // for (int i = 0; i < rowsNum; ++i) {
-    //     for (int j = 0; j < colsNum; ++j) {
-    //         setElement(clone.matrixData[i][j],i,j);
-    //     }
-    // }
+	
 }
 
 //Copy Assignment Constructor
