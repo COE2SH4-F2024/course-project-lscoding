@@ -36,11 +36,11 @@ void FoodBin::generateFoods(objPosArrayList* playerPosList, int playerPosListSiz
         for(int i = 0; i < playerPosListSize; i++){
             //Checks if in range of board
             if(newX == 0 
-                || newX == xRange-2 
-                || newX == playerPosList->getElement(i).pos->x
-                || newY == playerPosList->getElement(i).pos->y
+                || newX == xRange-1 
+                || (newX == playerPosList->getElement(i).pos->x
+                && newY == playerPosList->getElement(i).pos->y)
                 || newY == 0
-                || newY == yRange-2)
+                || newY == yRange-1)
             {
                 continue;
             }
