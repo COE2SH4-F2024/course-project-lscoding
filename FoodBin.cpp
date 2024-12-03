@@ -29,6 +29,7 @@ void FoodBin::generateFoods(objPosArrayList* playerPosList, int playerPosListSiz
 
     while(count != foodListCount){
         
+        bool forceContinue = false;
 
         int newX = rand() % xRange;       
         int newY =  rand() % yRange;
@@ -42,19 +43,36 @@ void FoodBin::generateFoods(objPosArrayList* playerPosList, int playerPosListSiz
                 || newY == 0
                 || newY == yRange-1)
             {
-                continue;
+                forceContinue = true;
             }
         }
 
-            int charIndex = rand() % 2;
+        if(forceContinue == true)
+        {
+            continue;
+        }
+        for(int i = 0; i < count; i++)
+        {
+            objPos oldFoodPos = foodList[i].getObjPos();
+            if(oldFoodPos.pos->x == newX && oldFoodPos.pos->y){
+                forceContinue = true;
+            }   
+        }
 
-            charIndex = charIndex - (numOfSpecialFood==2 && charIndex == 1);
-            
-            numOfSpecialFood += charIndex;
+        if(forceContinue == true)
+        {
+            continue;
+        }
 
-            objPos newObj = objPos(newX, newY, selectableChar[charIndex]);
-            foodList[count] = newObj;
-            count += 1;
+        int charIndex = rand() % 2;
+
+        charIndex = charIndex - (numOfSpecialFood==2 && charIndex == 1);
+        
+        numOfSpecialFood += charIndex;
+
+        objPos newObj = objPos(newX, newY, selectableChar[charIndex]);
+        foodList[count] = newObj;
+        count += 1;
             
             
             
